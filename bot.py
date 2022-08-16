@@ -11,7 +11,7 @@ from discord.ext.commands.errors import MissingPermissions
 from dotenv import load_dotenv
 from quotes import quotes
 from discord.ext.commands import MissingPermissions
-
+import asyncio
 
 # LOAD PERMISSIONS
 # intents = discord.Intents.default()
@@ -22,13 +22,15 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 # CONNECT DISCORD BOT, SET PREFIX COMMAND AND BOT STATUS
-intents = discord.Intents().all()
+intents = discord.Intents.default()
+intents.members = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.event
 async def on_ready():
     # await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=""))
     print(f'{bot.user.name} has connected to Discord!')
+    asyncio.create_task(sendQuote())   
 
 # COMMAND DO NOT EXIST ERROR
 # @bot.event
@@ -53,27 +55,24 @@ async def on_ready():
 #         await ctx.send('Bro, you can\'t do that!')
 
 # SENDS MESSAGES EVERYDAY
-@tasks.loop(hours=24) 
-async def sendmessage():
-    users = [354329589515812865]
-    for id in users:
-        member = await bot.fetch_user(id)
-        try:
-            response = random.choice(quotes)
-            member.send(response)
-        except:
-            member.send("Don't worked!")
+# @tasks.loop(hours=24) 
+# async def sendmessage():
+#     users = [354329589515812865]
+#     for id in users:
+#         member = await bot.fetch_user(id)
+#         try:
+#             response = random.choice(quotes)
+#             member.send(response)
+#         except:
+#             member.send("Don't worked!")
 
-# MESSAGE REACTION
-@bot.command()
-async def startmess(ctx):
-    sendmessage.start()
-    await ctx.message.add_reaction('✅')
+# # # MESSAGE REACTION
+@tasks.loop(seconds=10)
+async def sendQuote():
+    user = await bot.fetch_user("354329589515812865")
+    response = random.choice(quotes)
+    await user.send(response)
 
-@bot.command()
-async def stopmess(ctx):
-    sendmessage.stop()
-    await ctx.message.add_reaction('❌')
-
+sendQuote.start()
 # GET THE DISCORD BOT RUNNING
 bot.run(TOKEN)
