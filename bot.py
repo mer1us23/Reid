@@ -5,7 +5,6 @@ import random
 import discord
 import os
 from discord.ext import commands, tasks
-import DiscordUtils
 from discord.ext.commands.core import Command
 from discord.ext.commands.errors import MissingPermissions
 from dotenv import load_dotenv
@@ -30,7 +29,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     # await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=""))
     print(f'{bot.user.name} has connected to Discord!')
-    asyncio.create_task(sendQuote())   
+      
 
 # COMMAND DO NOT EXIST ERROR
 # @bot.event
@@ -67,7 +66,7 @@ async def on_ready():
 #             member.send("Don't worked!")
 
 # # # MESSAGE REACTION
-@tasks.loop(seconds=10)
+@tasks.loop(hours=12)
 async def sendQuote():
     user = await bot.fetch_user("354329589515812865")
     response = random.choice(quotes)
