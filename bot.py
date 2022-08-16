@@ -9,9 +9,7 @@ import DiscordUtils
 from discord.ext.commands.core import Command
 from discord.ext.commands.errors import MissingPermissions
 from dotenv import load_dotenv
-from discordTogether import DiscordTogether
 from quotes import quotes
-from encouragements import encouragements
 from discord.ext.commands import MissingPermissions
 
 # LOAD PERMISSIONS
@@ -23,7 +21,6 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 # CONNECT DISCORD BOT, SET PREFIX COMMAND AND BOT STATUS
-music = DiscordUtils.Music()
 intents = discord.Intents().all()
 bot = commands.Bot(command_prefix='bro ', intents=intents)
 
@@ -31,20 +28,6 @@ bot = commands.Bot(command_prefix='bro ', intents=intents)
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="u like a good bro <3"))
     print(f'{bot.user.name} has connected to Discord!')
-
-
-
-# COIN FLIP COMMAND
-@bot.command(name='flip', help='Play coin flip challenge')
-async def flipFunction(ctx):
-        coin = [
-            '*Heads*',
-            '*Tails*'
-        ]
-        response = random.choice(coin)
-        await ctx.send(response)
-
-
 
 # COMMAND DO NOT EXIST ERROR
 @bot.event
