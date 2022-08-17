@@ -28,7 +28,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 bot.remove_command('help')
 
 # SENDS MESSAGES EVERYDAY
-@tasks.loop(seconds=12.0)
+@tasks.loop(hours=15)
 async def sendQuote():
     user = await bot.fetch_user("354329589515812865")
     response = random.choice(quotes)
