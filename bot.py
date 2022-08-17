@@ -25,9 +25,10 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix='!', intents=intents)
+bot.remove_command('help')
 
 # SENDS MESSAGES EVERYDAY
-@tasks.loop(hours=12)
+@tasks.loop(seconds=12.0)
 async def sendQuote():
     user = await bot.fetch_user("354329589515812865")
     response = random.choice(quotes)
@@ -37,15 +38,16 @@ async def sendQuote():
 async def on_ready():
     # await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=""))
     print(f'{bot.user.name} has connected to Discord!')
-    user = await bot.fetch_user("354329589515812865")
-    await user.send("salut, eu sunt bot-ul tau de citate din carti. daca doresti sa incepem, scrie !start in chat.")
     
+@bot.command(name="help")
+async def _command(ctx):
+    await ctx.send("**LISTA CU COMENZI**\n!start -> pentru a incepe procesul de trimitere citat.\n!stop -> pentru a opri procesul de trimitere citat.\n!lista -> pentru a vedea lista cu carti.")
 
 # COMMAND DO NOT EXIST ERROR
-# @bot.event
-# async def on_command_error(ctx, error):
-#     if isinstance(error, commands.CommandNotFound):
-#         await ctx.send('Bro, that command don\'t even exist!')
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send('comanda nu exista, tasteaza !help pentru a vedea comenzile.')
 
 
 @bot.command(name="start")
@@ -73,5 +75,12 @@ async def _command(ctx):
         sendQuote.stop()
     except:
         await ctx.send("nu i-ai spus bot-ului din ce carti sa-ti trimita citate.")
+
+
+
+@bot.command(name="lista")
+async def _command(ctx):
+    await ctx.send("**LISTA CU CARTI**\n1. Arta subtila a nepasarii. O metoda nonconformista pentru o viata mai buna - Mark Manson\n2. Fuck! De ce nu mă schimb? - Dr. Gabija Toleikyte (deocamdata este in lucru)")
+
 # GET THE DISCORD BOT RUNNING
 bot.run(TOKEN)
