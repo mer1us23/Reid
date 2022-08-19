@@ -64,7 +64,7 @@ async def _command(ctx):
     except asyncio.TimeoutError:
         await ctx.send("scuze, dar nu ai raspuns in 30 de secunde! foloseste iar !start.")
 
-@tasks.loop(hours=24)
+@tasks.loop(hours=24, reconnect=True)
 async def sendQuote():
     user = await bot.fetch_user("354329589515812865")
     response = random.choice(quotes)
@@ -97,12 +97,12 @@ async def _command(ctx):
 async def _command(ctx):
     sendQuote.restart()
 
-@tasks.loop(hours=1)
-async def verify():
-    print("Is the process still running?", sendQuote.is_running())
-    print("Had the process failed?", sendQuote.failed())
+# @tasks.loop(hours=1)
+# async def verify():
+#     print("Is the process still running?", sendQuote.is_running())
+#     print("Had the process failed?", sendQuote.failed())
     
-verify.start()
+# verify.start()
 
 # GET THE DISCORD BOT RUNNING
 bot.run(TOKEN)
