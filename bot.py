@@ -1,7 +1,7 @@
 # bot.py
 
 # IMPORTS
-import datetime
+import datetime as dt
 import random
 from tabnanny import check
 import discord
@@ -30,17 +30,12 @@ bot.remove_command('help')
 
 # SENDS MESSAGES EVERYDAY
 # date = datetime.datetime.now()
-@tasks.loop(hours=1)
-async def sendQuote():
-    user = await bot.fetch_user("354329589515812865")
-    response = random.choice(quotes)
-    await user.send(response)
 
 @bot.event
 async def on_ready():
     # await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=""))
     print(f'{bot.user.name} has connected to Discord!')
-    
+
 @bot.command(name="help")
 async def _command(ctx):
     await ctx.send("**LISTA CU COMENZI**\n!start -> pentru a incepe procesul de trimitere citat.\n!stop -> pentru a opri procesul de trimitere citat.\n!lista -> pentru a vedea lista cu carti.")
@@ -69,6 +64,12 @@ async def _command(ctx):
     except asyncio.TimeoutError:
         await ctx.send("scuze, dar nu ai raspuns in 30 de secunde! foloseste iar !start.")
 
+@tasks.loop(hours=24)
+async def sendQuote():
+    user = await bot.fetch_user("354329589515812865")
+    response = random.choice(quotes)
+    await user.send(response)
+
 
 @bot.command(name="stop")
 async def _command(ctx):
@@ -96,8 +97,13 @@ async def _command(ctx):
 async def _command(ctx):
     sendQuote.restart()
 
-print()
+@tasks.loop(hours=1)
+async def verify():
+    print("Is the process still running?", sendQuote.is_running())
+    print("Had the process failed?", sendQuote.failed())
+    
+verify.start()
+
 # GET THE DISCORD BOT RUNNING
 bot.run(TOKEN)
-
 
