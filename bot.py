@@ -1,6 +1,7 @@
 # bot.py
 
 # IMPORTS
+import datetime
 import random
 from tabnanny import check
 import discord
@@ -28,7 +29,8 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 bot.remove_command('help')
 
 # SENDS MESSAGES EVERYDAY
-@tasks.loop(hours=15)
+# date = datetime.datetime.now()
+@tasks.loop(hours=1)
 async def sendQuote():
     user = await bot.fetch_user("354329589515812865")
     response = random.choice(quotes)
@@ -82,5 +84,20 @@ async def _command(ctx):
 async def _command(ctx):
     await ctx.send("**LISTA CU CARTI**\n1. Arta subtila a nepasarii. O metoda nonconformista pentru o viata mai buna - Mark Manson\n2. Fuck! De ce nu mă schimb? - Dr. Gabija Toleikyte (deocamdata este in lucru)")
 
+@bot.command(name="works")
+async def _command(ctx):
+    print(sendQuote.is_running())
+
+@bot.command(name="failed")
+async def _command(ctx):
+    print(sendQuote.failed())
+
+@bot.command(name="restart")
+async def _command(ctx):
+    sendQuote.restart()
+
+print()
 # GET THE DISCORD BOT RUNNING
 bot.run(TOKEN)
+
+
