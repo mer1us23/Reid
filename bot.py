@@ -46,6 +46,10 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('comanda nu exista, tasteaza !help pentru a vedea comenzile.')
 
+# @bot.event
+# async def on_message(message):
+#     print(message.author.id)
+
 # START COMMAND
 @bot.command(name="start")
 async def _command(ctx):
