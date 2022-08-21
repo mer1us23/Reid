@@ -46,13 +46,13 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('comanda nu exista, tasteaza !help pentru a vedea comenzile.')
 
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-    global id 
-    id = message.author.id
-    await bot.process_commands(message)
+# @bot.event
+# async def on_message(message):
+#     if message.author == bot.user:
+#         return
+#     global id 
+#     id = message.author.id
+#     await bot.process_commands(message)
 
 # START COMMAND
 @bot.command(name="start")
@@ -73,9 +73,9 @@ async def _command(ctx):
         await ctx.send("scuze, dar nu ai raspuns in 30 de secunde! foloseste iar !start.")
 
 # SENDS MESSAGES EVERYDAY
-@tasks.loop(hours=24, reconnect=True)
+@tasks.loop(hours=20, reconnect=True)
 async def sendQuote():
-    user = await bot.fetch_user(id)
+    user = await bot.fetch_user("354329589515812865")
     response = random.choice(quotes)
     await user.send(response)
 
