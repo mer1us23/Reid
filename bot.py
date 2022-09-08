@@ -123,5 +123,8 @@ async def _command(ctx):
 # verify.start()
 
 # GET THE DISCORD BOT RUNNING
-bot.run(TOKEN)
+try:    
+    bot.run(TOKEN)
+except:
+    os.system("kill 1")
 
