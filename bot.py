@@ -33,7 +33,7 @@ bot.remove_command('help')
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.streaming, name="a book"))
-    print(f'{bot.user.name} has connected to Discord!')
+    print(f'{bot.user.name} has connected to Discord! Hello!')
 
 # HELP COMMAND
 @bot.command(name="help")
