@@ -73,7 +73,7 @@ async def _command(ctx):
         await ctx.send("scuze, dar nu ai raspuns in 30 de secunde! foloseste iar !start.")
 
 # SENDS MESSAGES EVERYDAY
-@tasks.loop(seconds=3, reconnect=True)
+@tasks.loop(seconds=5.0, reconnect=True)
 async def sendQuote():
     user = await bot.fetch_user("354329589515812865")
     response = random.choice(quotes)
