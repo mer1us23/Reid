@@ -33,7 +33,7 @@ bot.remove_command('help')
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.streaming, name="a book"))
-    print(f'{bot.user.name} has connected to Discord! Hello!')
+    print(f'{bot.user.name} has connected to Discord!')
 
 # HELP COMMAND
 @bot.command(name="help")
@@ -73,7 +73,7 @@ async def _command(ctx):
         await ctx.send("scuze, dar nu ai raspuns in 30 de secunde! foloseste iar !start.")
 
 # SENDS MESSAGES EVERYDAY
-@tasks.loop(seconds=5.0, reconnect=True)
+@tasks.loop(hours=24, reconnect=True)
 async def sendQuote():
     user = await bot.fetch_user("354329589515812865")
     response = random.choice(quotes)
